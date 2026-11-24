@@ -14,7 +14,7 @@ const chakra = localFont({
 
 export const metadata: Metadata = {
   title: "Urai · Diagnosa Honda BeAT",
-  description: "Model 3D Honda BeAT yang bisa diurai per komponen, dengan asisten AI untuk menebak bagian yang bermasalah.",
+  description: "Bongkar Honda BeAT per komponen dalam 3D. Ceritakan keluhan motormu, lihat bagian mana yang patut dicurigai.",
   appleWebApp: { capable: true, title: "Urai", statusBarStyle: "black-translucent" },
 };
 

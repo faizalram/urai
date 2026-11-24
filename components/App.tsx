@@ -111,8 +111,8 @@ export default function App() {
           <PartList selected={selected} onPick={pickPart} />
         </div>
         <p className="disclaimer">
-          Model 3D ilustratif; letak komponen perkiraan. Saran ini bukan pengganti pemeriksaan mekanik. Untuk rem, rangka, dan bensin bocor, periksakan ke
-          bengkel sebelum dipakai.
+          Model 3D cuma ilustrasi, letak komponen perkiraan. Ini bukan pengganti mekanik: kalau soal rem, rangka, atau bensin bocor, bawa ke bengkel
+          sebelum dipakai lagi.
         </p>
       </section>
     </div>

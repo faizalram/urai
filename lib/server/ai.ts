@@ -23,7 +23,7 @@ Kode kedip MIL: 1 MAP, 7 EOT, 8 TP, 9 IAT, 12 injektor, 21 O2, 29 IACV, 33 ECM, 
 const PART_LIST = PARTS.map((p) => `${p.id}: ${p.name}`).join("\n");
 
 function systemPrompt(context: string) {
-  return `Kamu mekanik ahli Honda BeAT yang membantu pemilik motor memahami keluhannya. Jawab dalam bahasa yang dipakai pengguna (biasanya Bahasa Indonesia santai tapi jelas).
+  return `Kamu mekanik bengkel yang sudah bertahun-tahun pegang Honda BeAT. Pemilik motor cerita keluhannya, kamu jawab seperti ngobrol di bengkel: langsung, pakai istilah bengkel (kampas ganda, roller, brebet, ngempos), sapa dengan "kamu". Ikuti bahasa pengguna; kalau dia pakai Inggris, jawab Inggris dengan gaya yang sama.
 
 ${BIKE}
 
@@ -40,7 +40,14 @@ Aturan:
 - Jangan mengarang angka spesifikasi di luar data di atas. Jangan menyarankan modifikasi atau membongkar sistem injeksi sendiri.
 - Bila keluhan terlalu umum, tetap beri dugaan terbaik lalu isi followUp dengan SATU pertanyaan pendek yang paling membantu.
 - Bila pengguna hanya bertanya tentang komponen (bukan keluhan), jelaskan singkat dan sorot komponen itu saja.
-- reply maksimal 3 kalimat, tanpa daftar.
+- reply maksimal 3 kalimat, tanpa daftar. Kalimat pertama langsung dugaan utamanya.
+
+Gaya bahasa (penting):
+- Jangan buka dengan basa-basi atau mengulang keluhan ("Berdasarkan keluhan Anda", "Tentu", "Baik", "Saya mengerti", "Dari gejala yang kamu sebutkan").
+- Jangan tutup dengan "Semoga membantu", tawaran bantuan, atau saran umum seperti "periksakan ke bengkel terpercaya".
+- Jangan pakai kata kaku atau berlebihan: "Anda", "optimal", "secara menyeluruh", "sangat penting", "pastikan", "hal ini", "disarankan untuk".
+- Tulis konkret: sebut bagian, gejala, dan tindakan yang spesifik. Lebih baik pendek daripada lengkap tapi kosong.
+- Isi why, causes dan solutions dengan frasa pendek ala catatan mekanik, bukan kalimat penjelasan panjang.
 
 Balas HANYA dengan JSON:
 {"reply": string, "parts": [{"id": string, "likelihood": "high"|"medium"|"low", "why": string}], "causes": [string], "solutions": [{"text": string, "who": "diy"|"bengkel"}], "safety": "ok"|"caution"|"stop", "followUp": string|null}`;
@@ -106,7 +113,7 @@ export async function diagnose(turns: ChatTurn[]): Promise<Diagnosis> {
   const fallback = localDiagnosis(milCode(lastUser) !== null ? lastUser : userText);
 
   const key = process.env.AI_API_KEY;
-  if (!key) return { ...fallback, reply: `${fallback.reply} (Mode offline: AI_API_KEY belum diisi, jawaban dari basis pengetahuan.)` };
+  if (!key) return { ...fallback, reply: `${fallback.reply} (AI belum aktif, jawaban dari data servis.)` };
 
   const body: Record<string, unknown> = {
     model: MODEL,
@@ -127,14 +134,14 @@ export async function diagnose(turns: ChatTurn[]): Promise<Diagnosis> {
     if (!res.ok) {
       const detail = await res.text().catch(() => "");
       console.error("AI error", res.status, detail.slice(0, 300));
-      const why = res.status === 429 ? "batas gratis AI per menit sedang penuh" : "AI sedang tidak bisa dihubungi";
-      return { ...fallback, reply: `${fallback.reply} (${why}; jawaban ini dari basis pengetahuan.)` };
+      const why = res.status === 429 ? "AI lagi penuh" : "AI lagi tidak bisa dihubungi";
+      return { ...fallback, reply: `${fallback.reply} (${why}, jawaban dari data servis.)` };
     }
     const data = (await res.json()) as { choices?: { message?: { content?: string } }[] };
     const text = (data.choices?.[0]?.message?.content ?? "").replace(/```json|```/g, "").trim();
     return clean(JSON.parse(text), fallback);
   } catch (e) {
     console.error("AI failure", e);
-    return { ...fallback, reply: `${fallback.reply} (AI tidak menjawab tepat waktu; jawaban ini dari basis pengetahuan.)` };
+    return { ...fallback, reply: `${fallback.reply} (AI kelamaan, jawaban dari data servis.)` };
   }
 }

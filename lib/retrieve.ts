@@ -107,7 +107,7 @@ export function localDiagnosis(text: string): Diagnosis {
   if (found.length === 0) {
     return {
       reply:
-        "Saya belum bisa memetakan keluhan itu. Ceritakan gejalanya: kapan terjadi (mulai jalan, saat digas, saat berhenti), bunyinya seperti apa, dan apakah lampu injeksi berkedip.",
+        "Belum ketemu yang cocok. Ceritakan lebih detail: munculnya kapan (mulai jalan, pas digas, pas berhenti), bunyinya kayak apa, lampu injeksi kedip atau nggak.",
       parts: [],
       causes: [],
       solutions: [],
@@ -120,7 +120,7 @@ export function localDiagnosis(text: string): Diagnosis {
   for (const s of found) for (const p of s.parts) if (!merged.has(p.id) && PART_BY_ID.has(p.id)) merged.set(p.id, p);
   const order: Record<Likelihood, number> = { high: 0, medium: 1, low: 2 };
   return {
-    reply: `Paling mirip: ${main.title}.${main.checks?.length ? ` Cek dulu: ${main.checks[0].charAt(0).toLowerCase()}${main.checks[0].slice(1)}.` : ""}`,
+    reply: `Kemungkinan besar ${main.title.charAt(0).toLowerCase()}${main.title.slice(1)}.${main.checks?.length ? ` Cirinya: ${main.checks[0].charAt(0).toLowerCase()}${main.checks[0].slice(1)}.` : ""}`,
     parts: [...merged.values()].sort((a, b) => order[a.likelihood] - order[b.likelihood]).slice(0, 6),
     causes: main.causes,
     solutions: main.solutions,
