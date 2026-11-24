@@ -2,6 +2,7 @@
 
 import { useCallback, useRef, useState } from "react";
 import Chat from "./Chat";
+import Logo from "./Logo";
 import PartCard from "./PartCard";
 import PartList from "./PartList";
 import Viewer, { type Highlight } from "./Viewer";
@@ -82,7 +83,10 @@ export default function App() {
         <Viewer explode={explode} xray={xray} highlights={highlights} selected={selected} focus={focus} onSelect={setSelected} />
 
         <header className="brand">
-          <span className="logo">Urai</span>
+          <span className="logo">
+            <Logo size={34} />
+            Rotom
+          </span>
           <span className="model">Honda BeAT · rangka eSAF 2020+</span>
         </header>
 
@@ -150,8 +154,17 @@ export default function App() {
               setPanelW(null);
             }}
             title={wide ? "Perkecil panel" : "Perbesar panel"}
+            aria-label={wide ? "Perkecil panel" : "Perbesar panel"}
           >
-            {wide ? "Perkecil" : "Perbesar"}
+            {wide ? (
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M4 14h6v6M20 10h-6V4M14 10l7-7M3 21l7-7" />
+              </svg>
+            ) : (
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
+              </svg>
+            )}
           </button>
         </div>
         <div className="panel-body" hidden={tab !== "chat"}>

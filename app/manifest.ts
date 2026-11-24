@@ -2,8 +2,8 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Urai · Diagnosa Honda BeAT",
-    short_name: "Urai",
+    name: "Rotom · Diagnosa Honda BeAT",
+    short_name: "Rotom",
     start_url: "/",
     display: "standalone",
     background_color: "#0e141c",

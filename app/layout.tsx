@@ -13,9 +13,9 @@ const chakra = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Urai · Diagnosa Honda BeAT",
+  title: "Rotom · Diagnosa Honda BeAT",
   description: "Model 3D Honda BeAT yang bisa dibongkar per komponen. Tuliskan keluhan motor, lalu lihat komponen yang perlu diperiksa.",
-  appleWebApp: { capable: true, title: "Urai", statusBarStyle: "black-translucent" },
+  appleWebApp: { capable: true, title: "Rotom", statusBarStyle: "black-translucent" },
 };
 
 export const viewport: Viewport = {

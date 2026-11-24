@@ -134,12 +134,16 @@ button {
   top: calc(env(safe-area-inset-top, 0px) + 14px);
   left: 18px;
   display: flex;
-  align-items: baseline;
+  align-items: center;
   gap: 10px;
   pointer-events: none;
 }
 
 .logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  align-self: center;
   font-family: var(--display);
   font-weight: 700;
   font-size: 1.6rem;
@@ -386,9 +390,11 @@ button {
 }
 
 .tabs .panel-expand {
+  display: grid;
+  place-items: center;
   margin-left: auto;
   margin-bottom: 6px;
-  padding: 0.35rem 0.7rem;
+  padding: 0.4rem;
   border: 1px solid var(--line);
   border-radius: 8px;
   font-size: 0.8rem;

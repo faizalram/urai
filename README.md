@@ -1,4 +1,4 @@
-# Urai · Diagnosa Honda BeAT
+# Rotom · Diagnosa Honda BeAT
 
 A 3D Honda BeAT (eSAF frame, 2020 onward) you can take apart part by part, with a chat that turns a described problem into suspected parts lit up on the model, likely causes and what to do.
 
