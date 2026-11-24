@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import Chat from "./Chat";
 import PartCard from "./PartCard";
 import PartList from "./PartList";
@@ -15,6 +15,32 @@ export default function App() {
   const [focus, setFocus] = useState<{ ids: string[]; n: number }>({ ids: [], n: 0 });
   const [tab, setTab] = useState<"chat" | "parts">("chat");
   const [ask, setAsk] = useState<{ text: string; n: number } | null>(null);
+  // Panel size: "wide" toggle for all screens, plus a drag width (px) on desktop
+  const [wide, setWide] = useState(false);
+  const [panelW, setPanelW] = useState<number | null>(null);
+  const appRef = useRef<HTMLDivElement>(null);
+
+  const startDrag = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
+    const app = appRef.current;
+    if (!app) return;
+    e.preventDefault();
+    const el = e.currentTarget;
+    el.setPointerCapture(e.pointerId);
+    const move = (ev: PointerEvent) => {
+      const r = app.getBoundingClientRect();
+      const w = Math.min(Math.max(r.right - ev.clientX, 320), r.width - 280);
+      setPanelW(w);
+      setWide(false);
+    };
+    const up = () => {
+      el.removeEventListener("pointermove", move);
+      el.removeEventListener("pointerup", up);
+      el.removeEventListener("pointercancel", up);
+    };
+    el.addEventListener("pointermove", move);
+    el.addEventListener("pointerup", up);
+    el.addEventListener("pointercancel", up);
+  }, []);
 
   const focusOn = useCallback((ids: string[]) => setFocus((f) => ({ ids, n: f.n + 1 })), []);
 
@@ -47,7 +73,11 @@ export default function App() {
   }, []);
 
   return (
-    <div className="app">
+    <div
+      ref={appRef}
+      className={`app${wide ? " app-wide" : ""}`}
+      style={panelW && !wide ? ({ "--panel-w": `${panelW}px` } as React.CSSProperties) : undefined}
+    >
       <main className="stage">
         <Viewer explode={explode} xray={xray} highlights={highlights} selected={selected} focus={focus} onSelect={setSelected} />
 
@@ -96,12 +126,32 @@ export default function App() {
       </main>
 
       <section className="panel">
+        <div
+          className="panel-resize"
+          role="separator"
+          aria-orientation="vertical"
+          aria-label="Ubah lebar panel"
+          onPointerDown={startDrag}
+          onDoubleClick={() => setPanelW(null)}
+        />
         <div className="tabs" role="tablist">
           <button type="button" role="tab" aria-selected={tab === "chat"} onClick={() => setTab("chat")}>
             Diagnosa
           </button>
           <button type="button" role="tab" aria-selected={tab === "parts"} onClick={() => setTab("parts")}>
             Komponen
+          </button>
+          <button
+            type="button"
+            className="panel-expand"
+            aria-pressed={wide}
+            onClick={() => {
+              setWide((w) => !w);
+              setPanelW(null);
+            }}
+            title={wide ? "Perkecil panel" : "Perbesar panel"}
+          >
+            {wide ? "Perkecil" : "Perbesar"}
           </button>
         </div>
         <div className="panel-body" hidden={tab !== "chat"}>

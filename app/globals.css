@@ -50,9 +50,14 @@ button {
 /* ---------- Layout ---------- */
 
 .app {
+  --panel-w: 420px;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 420px;
+  grid-template-columns: minmax(0, 1fr) var(--panel-w);
   height: 100dvh;
+}
+
+.app-wide {
+  --panel-w: min(760px, 62vw);
 }
 
 .stage {
@@ -75,6 +80,7 @@ button {
 }
 
 .panel {
+  position: relative;
   display: flex;
   flex-direction: column;
   min-height: 0;
@@ -83,10 +89,36 @@ button {
   border-left: 1px solid var(--line);
 }
 
+/* Drag the panel's left edge to resize it (desktop only) */
+.panel-resize {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -4px;
+  width: 8px;
+  z-index: 5;
+  cursor: col-resize;
+  touch-action: none;
+}
+
+.panel-resize:hover,
+.panel-resize:active {
+  background: linear-gradient(90deg, transparent 3px, var(--teal) 3px, var(--teal) 5px, transparent 5px);
+}
+
 @media (max-width: 900px) {
   .app {
     grid-template-columns: 1fr;
     grid-template-rows: 52dvh minmax(0, 1fr);
+  }
+
+  /* On phones, "Perbesar" shrinks the 3D view so the chat gets most of the screen */
+  .app-wide {
+    grid-template-rows: 24dvh minmax(0, 1fr);
+  }
+
+  .panel-resize {
+    display: none;
   }
 
   .panel {
@@ -351,6 +383,21 @@ button {
   font-family: var(--display);
   font-weight: 600;
   color: var(--muted);
+}
+
+.tabs .panel-expand {
+  margin-left: auto;
+  margin-bottom: 6px;
+  padding: 0.35rem 0.7rem;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  font-size: 0.8rem;
+}
+
+.tabs .panel-expand:hover,
+.tabs .panel-expand[aria-pressed="true"] {
+  color: var(--ink);
+  border-color: var(--teal);
 }
 
 .tabs button[aria-selected="true"] {
