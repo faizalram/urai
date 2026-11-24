@@ -82,14 +82,14 @@ export default function App() {
             aria-label="Tingkat urai"
           />
           <button type="button" className="ctl" aria-pressed={xray} onClick={() => setXray((x) => !x)}>
-            Bodi transparan
+            Mode X-ray
           </button>
           <button type="button" className="ctl" onClick={() => focusOn([])}>
             Reset kamera
           </button>
           {highlights.length > 0 && (
             <button type="button" className="ctl" onClick={() => setHighlights([])}>
-              Hapus sorotan
+              Hapus highlight
             </button>
           )}
         </div>

@@ -101,7 +101,7 @@ export const SYMPTOMS: Symptom[] = [
       { id: "spark_plug", likelihood: "high", why: "Busi aus atau kotor membuat percikan lemah." },
       { id: "injector", likelihood: "high", why: "Injektor kotor menetes, tidak mengabut." },
       { id: "fuel_pump", likelihood: "medium", why: "Pompa lemah atau saringannya tersumbat membuat tekanan bensin naik-turun." },
-      { id: "throttle_body", likelihood: "medium", why: "Throttle body kotor atau sensor posisi gas (TPS) bermasalah." },
+      { id: "throttle_body", likelihood: "medium", why: "Throttle body kotor atau sensor TPS bermasalah." },
       { id: "ignition_coil", likelihood: "low", why: "Koil atau cop busi retak, apalagi setelah hujan." },
       { id: "air_filter", likelihood: "low", why: "Saringan udara sangat kotor." },
     ],
@@ -514,7 +514,7 @@ export const SYMPTOMS: Symptom[] = [
     mil: 1,
     title: "MIL kedip 1: sensor MAP",
     keywords: [],
-    parts: [{ id: "throttle_body", likelihood: "high", why: "Sensor tekanan udara masuk (MAP) ada di unit sensor throttle body." }],
+    parts: [{ id: "throttle_body", likelihood: "high", why: "Sensor MAP ada di unit sensor throttle body." }],
     causes: ["Sensor MAP atau konektornya bermasalah"],
     solutions: [{ text: "Periksa konektor dan sensor di AHASS dengan alat diagnosa", who: "bengkel" }],
     safety: "caution",
@@ -532,7 +532,7 @@ export const SYMPTOMS: Symptom[] = [
   {
     id: "mil_8",
     mil: 8,
-    title: "MIL kedip 8: sensor posisi gas (TP)",
+    title: "MIL kedip 8: throttle position sensor (TP)",
     keywords: [],
     parts: [{ id: "throttle_body", likelihood: "high", why: "TPS ada di throttle body." }],
     causes: ["TPS rusak atau konektor longgar; gejala akselerasi buruk dan boros"],
@@ -542,7 +542,7 @@ export const SYMPTOMS: Symptom[] = [
   {
     id: "mil_9",
     mil: 9,
-    title: "MIL kedip 9: sensor suhu udara masuk (IAT)",
+    title: "MIL kedip 9: intake air temperature sensor (IAT)",
     keywords: [],
     parts: [{ id: "throttle_body", likelihood: "high", why: "Sensor IAT ada di unit sensor throttle body." }],
     causes: ["Sensor IAT atau rangkaiannya bermasalah, sering karena konektor kotor"],
@@ -562,7 +562,7 @@ export const SYMPTOMS: Symptom[] = [
   {
     id: "mil_21",
     mil: 21,
-    title: "MIL kedip 21: sensor oksigen (O2)",
+    title: "MIL kedip 21: O2 sensor",
     keywords: [],
     parts: [{ id: "o2_sensor", likelihood: "high", why: "Sensor O2 di leher knalpot." }],
     causes: ["Sensor O2 rusak; bisa disertai letupan di knalpot dan susah hidup"],
@@ -572,7 +572,7 @@ export const SYMPTOMS: Symptom[] = [
   {
     id: "mil_29",
     mil: 29,
-    title: "MIL kedip 29: katup udara langsam (IACV)",
+    title: "MIL kedip 29: idle air control valve (IACV)",
     keywords: [],
     parts: [{ id: "throttle_body", likelihood: "high", why: "IACV terpasang di throttle body." }],
     causes: ["IACV kotor atau rusak; langsam kasar, susah hidup dan boros"],
@@ -592,7 +592,7 @@ export const SYMPTOMS: Symptom[] = [
   {
     id: "mil_52",
     mil: 52,
-    title: "MIL kedip 52: sensor posisi kruk as (CKP)",
+    title: "MIL kedip 52: crankshaft position sensor (CKP)",
     keywords: [],
     parts: [{ id: "acg_starter", likelihood: "high", why: "Sensor CKP (pulser) ada di ACG." }],
     causes: ["Pulser/CKP atau kabel dari ACG ke ECM bermasalah"],
@@ -602,7 +602,7 @@ export const SYMPTOMS: Symptom[] = [
   {
     id: "mil_54",
     mil: 54,
-    title: "MIL kedip 54: sensor kemiringan (BAS)",
+    title: "MIL kedip 54: bank angle sensor (BAS)",
     keywords: [],
     parts: [{ id: "bank_angle_sensor", likelihood: "high", why: "Rangkaian BAS bermasalah." }],
     causes: ["Sensor BAS atau konektornya rusak, kadang setelah motor jatuh"],

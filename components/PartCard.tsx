@@ -48,7 +48,7 @@ export default function PartCard({ id, onClose, onAsk, onFocus }: Props) {
           </div>
         )}
         <button type="button" className="link-btn" onClick={() => onFocus(id)}>
-          Dekatkan kamera
+          Zoom ke sini
         </button>
       </div>
     </aside>
