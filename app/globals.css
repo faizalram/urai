@@ -78,6 +78,7 @@ button {
   display: flex;
   flex-direction: column;
   min-height: 0;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
   background: var(--panel);
   border-left: 1px solid var(--line);
 }
@@ -370,15 +371,6 @@ button {
 
 .panel-scroll {
   overflow-y: auto;
-}
-
-.disclaimer {
-  margin: 0;
-  padding: 8px 14px calc(env(safe-area-inset-bottom, 0px) + 10px);
-  border-top: 1px solid var(--line);
-  color: var(--muted);
-  font-size: 0.75rem;
-  line-height: 1.4;
 }
 
 /* ---------- Chat ---------- */
@@ -746,11 +738,6 @@ button {
 
   .partcard {
     max-height: 58%;
-  }
-
-  .disclaimer {
-    font-size: 0.68rem;
-    padding-top: 6px;
   }
 
   .composer textarea {

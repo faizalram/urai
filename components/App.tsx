@@ -110,10 +110,6 @@ export default function App() {
         <div className="panel-body panel-scroll" hidden={tab !== "parts"}>
           <PartList selected={selected} onPick={pickPart} />
         </div>
-        <p className="disclaimer">
-          Model 3D cuma ilustrasi, letak komponen perkiraan. Ini bukan pengganti mekanik: kalau soal rem, rangka, atau bensin bocor, bawa ke bengkel
-          sebelum dipakai lagi.
-        </p>
       </section>
     </div>
   );

@@ -23,7 +23,7 @@ Kode kedip MIL: 1 MAP, 7 EOT, 8 TP, 9 IAT, 12 injektor, 21 O2, 29 IACV, 33 ECM, 
 const PART_LIST = PARTS.map((p) => `${p.id}: ${p.name}`).join("\n");
 
 function systemPrompt(context: string) {
-  return `Kamu mekanik bengkel yang sudah bertahun-tahun pegang Honda BeAT. Pemilik motor cerita keluhannya, kamu jawab seperti ngobrol di bengkel: langsung, pakai istilah bengkel (kampas ganda, roller, brebet, ngempos), sapa dengan "kamu". Ikuti bahasa pengguna; kalau dia pakai Inggris, jawab Inggris dengan gaya yang sama.
+  return `Kamu mekanik berpengalaman yang khusus menangani Honda BeAT. Jawab keluhan pemilik motor dengan Bahasa Indonesia baku yang lugas, seperti mekanik menjelaskan hasil pemeriksaan kepada pelanggan: sopan, langsung, tanpa bahasa gaul. Istilah bengkel yang umum (kampas ganda, roller, brebet) boleh dipakai. Sebisa mungkin hindari kata ganti; bila perlu, sapa dengan "Anda". Bila pengguna menulis dalam bahasa Inggris, jawab dalam bahasa Inggris dengan gaya yang sama.
 
 ${BIKE}
 
@@ -43,11 +43,11 @@ Aturan:
 - reply maksimal 3 kalimat, tanpa daftar. Kalimat pertama langsung dugaan utamanya.
 
 Gaya bahasa (penting):
-- Jangan buka dengan basa-basi atau mengulang keluhan ("Berdasarkan keluhan Anda", "Tentu", "Baik", "Saya mengerti", "Dari gejala yang kamu sebutkan").
+- Jangan buka dengan basa-basi atau mengulang keluhan ("Berdasarkan keluhan Anda", "Tentu", "Baik", "Saya mengerti", "Dari gejala yang disebutkan").
 - Jangan tutup dengan "Semoga membantu", tawaran bantuan, atau saran umum seperti "periksakan ke bengkel terpercaya".
-- Jangan pakai kata kaku atau berlebihan: "Anda", "optimal", "secara menyeluruh", "sangat penting", "pastikan", "hal ini", "disarankan untuk".
+- Hindari kata yang berlebihan atau klise: "optimal", "secara menyeluruh", "sangat penting", "hal ini", "disarankan untuk".
 - Tulis konkret: sebut bagian, gejala, dan tindakan yang spesifik. Lebih baik pendek daripada lengkap tapi kosong.
-- Isi why, causes dan solutions dengan frasa pendek ala catatan mekanik, bukan kalimat penjelasan panjang.
+- Isi why, causes dan solutions dengan frasa pendek seperti catatan servis, bukan kalimat penjelasan panjang.
 
 Balas HANYA dengan JSON:
 {"reply": string, "parts": [{"id": string, "likelihood": "high"|"medium"|"low", "why": string}], "causes": [string], "solutions": [{"text": string, "who": "diy"|"bengkel"}], "safety": "ok"|"caution"|"stop", "followUp": string|null}`;
@@ -113,7 +113,7 @@ export async function diagnose(turns: ChatTurn[]): Promise<Diagnosis> {
   const fallback = localDiagnosis(milCode(lastUser) !== null ? lastUser : userText);
 
   const key = process.env.AI_API_KEY;
-  if (!key) return { ...fallback, reply: `${fallback.reply} (AI belum aktif, jawaban dari data servis.)` };
+  if (!key) return { ...fallback, reply: `${fallback.reply} (AI belum aktif; jawaban diambil dari data servis.)` };
 
   const body: Record<string, unknown> = {
     model: MODEL,
@@ -134,14 +134,14 @@ export async function diagnose(turns: ChatTurn[]): Promise<Diagnosis> {
     if (!res.ok) {
       const detail = await res.text().catch(() => "");
       console.error("AI error", res.status, detail.slice(0, 300));
-      const why = res.status === 429 ? "AI lagi penuh" : "AI lagi tidak bisa dihubungi";
-      return { ...fallback, reply: `${fallback.reply} (${why}, jawaban dari data servis.)` };
+      const why = res.status === 429 ? "Kuota AI sedang penuh" : "AI tidak dapat dihubungi";
+      return { ...fallback, reply: `${fallback.reply} (${why}; jawaban diambil dari data servis.)` };
     }
     const data = (await res.json()) as { choices?: { message?: { content?: string } }[] };
     const text = (data.choices?.[0]?.message?.content ?? "").replace(/```json|```/g, "").trim();
     return clean(JSON.parse(text), fallback);
   } catch (e) {
     console.error("AI failure", e);
-    return { ...fallback, reply: `${fallback.reply} (AI kelamaan, jawaban dari data servis.)` };
+    return { ...fallback, reply: `${fallback.reply} (AI tidak merespons tepat waktu; jawaban diambil dari data servis.)` };
   }
 }

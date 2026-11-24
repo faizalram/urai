@@ -60,7 +60,7 @@ export default function Chat({ ask, onDiagnosis, onFocusPart }: Props) {
       setMsgs((m) => [...m, { role: "assistant", text: data.reply, d: data }]);
       onDiagnosis(data);
     } catch (e) {
-      const msg = (e as Error).name === "TimeoutError" ? "Kelamaan nunggu jawaban. Coba kirim lagi." : (e as Error).message || "Koneksi putus. Coba lagi.";
+      const msg = (e as Error).name === "TimeoutError" ? "Jawaban terlalu lama. Silakan kirim ulang." : (e as Error).message || "Koneksi terputus. Silakan coba lagi.";
       setMsgs((m) => [...m, { role: "assistant", text: msg, error: true }]);
     } finally {
       setBusy(false);
@@ -77,7 +77,7 @@ export default function Chat({ ask, onDiagnosis, onFocusPart }: Props) {
       <div className="chat-list" ref={list} aria-live="polite" style={{ position: "relative" }}>
         {msgs.length === 0 && (
           <div className="chat-empty">
-            <p className="chat-hello">Motornya kenapa? Ceritakan kayak ke mekanik: munculnya kapan, bunyinya gimana, lampu injeksi kedip atau nggak.</p>
+            <p className="chat-hello">Apa keluhan motornya? Jelaskan kapan gejala muncul, bunyi yang terdengar, dan apakah lampu injeksi berkedip.</p>
             <div className="quick">
               {QUICK.map((q) => (
                 <button key={q} type="button" className="chip" onClick={() => send(q)}>
@@ -99,7 +99,7 @@ export default function Chat({ ask, onDiagnosis, onFocusPart }: Props) {
           ),
         )}
         {busy && (
-          <div className="msg msg-ai msg-typing" aria-label="Sedang dicek">
+          <div className="msg msg-ai msg-typing" aria-label="Sedang memproses">
             <span />
             <span />
             <span />
@@ -139,12 +139,12 @@ function DiagnosisView({ d, onFocusPart }: { d: Diagnosis; onFocusPart: (id: str
   return (
     <div className="diag">
       {d.safety === "stop" && <div className="safety safety-stop">Jangan dipakai dulu. Bawa ke bengkel untuk diperiksa.</div>}
-      {d.safety === "caution" && <div className="safety safety-caution">Masih bisa dibawa pelan ke bengkel, tapi jangan ditunda.</div>}
+      {d.safety === "caution" && <div className="safety safety-caution">Masih bisa dikendarai pelan ke bengkel, tetapi jangan ditunda.</div>}
       <p className="diag-reply">{d.reply}</p>
 
       {d.parts.length > 0 && (
         <section>
-          <h4>Yang dicurigai</h4>
+          <h4>Komponen yang dicurigai</h4>
           <ol className="suspects">
             {d.parts.map((p) => (
               <li key={p.id}>
@@ -161,7 +161,7 @@ function DiagnosisView({ d, onFocusPart }: { d: Diagnosis; onFocusPart: (id: str
 
       {d.causes.length > 0 && (
         <section>
-          <h4>Biasanya karena</h4>
+          <h4>Kemungkinan penyebab</h4>
           <ul className="plain">
             {d.causes.map((c, i) => (
               <li key={i}>{c}</li>
@@ -172,7 +172,7 @@ function DiagnosisView({ d, onFocusPart }: { d: Diagnosis; onFocusPart: (id: str
 
       {d.solutions.length > 0 && (
         <section>
-          <h4>Yang perlu dikerjakan</h4>
+          <h4>Langkah perbaikan</h4>
           <ul className="fixes">
             {d.solutions.map((s, i) => (
               <li key={i}>
